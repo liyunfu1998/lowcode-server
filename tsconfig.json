@@ -17,6 +17,13 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
-    "paths": {}
+    "paths": {
+      "@app/comm": [
+        "libs/comm/src"
+      ],
+      "@app/comm/*": [
+        "libs/comm/src/*"
+      ]
+    }
   }
 }
