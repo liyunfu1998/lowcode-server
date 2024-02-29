@@ -1,7 +1,8 @@
 {
   "name": "lowcode-server",
   "version": "0.0.1",
-  "scripts": {
+  "description": "测试工程",
+    "scripts": {
     "dev": "cd .. && pnpm start:lowcode"
   }
 }
