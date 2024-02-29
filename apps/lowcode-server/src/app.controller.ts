@@ -17,7 +17,8 @@ export class AppController {
   @Get()
   @Version('2')
   findAdd2(){
-    return 'i am new one'
+    
+    return `i am new one ${process.env.DATABASE_USER}`
   }
 
   @Get('findError')
