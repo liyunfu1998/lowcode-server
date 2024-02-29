@@ -18,4 +18,12 @@ export class AppController {
   findAdd2(){
     return 'i am new one'
   }
+
+  @Get('findError')
+  @Version([VERSION_NEUTRAL, '1'])
+  findError(){
+    const a:any = {}
+    console.log(a.b.c)
+    return this.appService.getHello()
+  }
 }
