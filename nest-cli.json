@@ -4,7 +4,7 @@
   "sourceRoot": "apps/lowcode-server/src",
   "compilerOptions": {
     "deleteOutDir": true,
-    "webpack": true,
+    "webpack": false,
     "tsConfigPath": "apps/lowcode-server/tsconfig.app.json"
   },
   "monorepo": true,

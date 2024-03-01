@@ -3,7 +3,7 @@ import { AppService } from './app.service';
 import { BusinessException } from './common/exceptions/business.exception';
 import { ConfigService } from '@nestjs/config';
 @Controller({
-  path: 'user',
+  path: 'app',
 })
 export class AppController {
   constructor(
