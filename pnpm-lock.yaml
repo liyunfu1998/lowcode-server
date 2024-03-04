@@ -119,6 +119,12 @@ importers:
 
   apps/lowcode-server: {}
 
+  apps/user:
+    dependencies:
+      '@nestjs/mapped-types':
+        specifier: '*'
+        version: 2.0.5(@nestjs/common@10.3.3)(class-validator@0.14.1)(reflect-metadata@0.2.1)
+
 packages:
 
   /@aashutoshrathi/word-wrap@1.2.6:

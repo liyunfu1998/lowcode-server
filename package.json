@@ -10,6 +10,7 @@
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "turbo run dev",
     "start:lowcode": "cross-env RUNNING_ENV=dev nest start --watch",
+    "start:user": "cross-env RUNNING_ENV=dev nest start user --watch",
     "start:devops": "cross-env RUNNING_ENV=dev nest start devops --watch",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
