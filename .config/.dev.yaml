@@ -8,6 +8,7 @@ MONGODB_CONFIG:
   entities: 'mongo' # 自定义加载类型
   logging: false # 数据库打印日志
   synchronize: true # 是否开启同步数据表功能
+  cache: true
 MYSQL_CONFIG:
   name: 'material_test'
   type: 'mysql'
@@ -19,3 +20,4 @@ MYSQL_CONFIG:
   entities: 'mysql'
   logging: true
   synchronize: true
+  cache: true
