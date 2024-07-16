@@ -1,0 +1,8 @@
+{
+  "editor.fontSize": 14,
+  "files.autoSave": "onFocusChange",
+  "editor.tabSize": 2,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true
+}
