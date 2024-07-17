@@ -8,10 +8,141 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+// 用户
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String?
+  id             String     @id @default(cuid())
+  email          String     @unique
+  name           String
+  password       String
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @default(now()) @updatedAt
+  createdSystems System[]   @relation("CreatedSystems")
+  updatedSystems System[]   @relation("UpdatedSystems")
+  createdRoles   Role[]     @relation("CreatedRoles")
+  updatedRoles   Role[]     @relation("UpdatedRoles")
+  userRoles      UserRole[]
+
+  @@index([email])
+}
+
+// 系统
+model System {
+  id          String      @id @default(cuid())
+  name        String
+  description String?
+  status      STATUS?     @default(ENABLED)
+  creator     User        @relation("CreatedSystems", fields: [creatorId], references: [id])
+  creatorId   String
+  updator     User?       @relation("UpdatedSystems", fields: [updatorId], references: [id])
+  updatorId   String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @default(now()) @updatedAt
+  resources   Resource[]
+  privileges  Privilege[]
+  roles       Role[]
+}
+
+// 资源
+model Resource {
+  id         String        @id @default(cuid())
+  name       String
+  // 对应资源的可识别key，并不等同于系统自建id
+  key        String        @unique
+  // 菜单类的资源才会有排序的功能
+  sort       Int?          @default(0)
+  // 父子嵌套，当为null为顶级资源
+  parent     Resource?     @relation("ParentChild", fields: [parentId], references: [id])
+  parentId   String?
+  children   Resource[]    @relation("ParentChild")
+  system     System?       @relation(fields: [systemId], references: [id])
+  systemId   String?
+  // 资源类型
+  type       RESOURCE_TYPE @default(NORMAL)
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @default(now()) @updatedAt
+  privileges Privilege[]
+
+  @@index([key])
+}
+
+// 权限管理
+model Privilege {
+  id             String           @id @default(cuid())
+  system         System           @relation(fields: [systemId], references: [id])
+  systemId       String
+  resource       Resource         @relation(fields: [resourceKey], references: [key])
+  resourceKey    String
+  name           String
+  description    String?
+  action         ACTION
+  status         PRIVILEGE_STATUS @default(ALLOW)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @default(now()) @updatedAt
+  rolePrivileges RolePrivilege[]
+}
+
+// 角色管理
+model Role {
+  id             String          @id @default(cuid())
+  name           String
+  description    String?
+  creator        User            @relation("CreatedRoles", fields: [createdId], references: [id])
+  createdId      String
+  updator        User            @relation("UpdatedRoles", fields: [updatedId], references: [id])
+  updatedId      String
+  system         System          @relation(fields: [systemId], references: [id])
+  systemId       String
+  status         STATUS          @default(ENABLED)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @default(now()) @updatedAt
+  rolePrivileges RolePrivilege[]
+  userRoles      UserRole[]
+
+  @@index([name])
+}
+
+// 角色 <-> 权限
+model RolePrivilege {
+  role        Role      @relation(fields: [roleId], references: [id])
+  roleId      String
+  privilege   Privilege @relation(fields: [privilegeId], references: [id])
+  privilegeId String
+  createdAt   DateTime  @default(now())
+
+  @@id([roleId, privilegeId])
+}
+
+// 用户<->角色
+model UserRole {
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  role      Role     @relation(fields: [roleId], references: [id])
+  roleId    String
   createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
+
+  @@id([userId, roleId])
+}
+
+enum STATUS {
+  DISABLED
+  ENABLED
+}
+
+enum RESOURCE_TYPE {
+  MENU
+  NORMAL
+}
+
+enum ACTION {
+  MANAGE
+  CREATE
+  READ
+  UPDATE
+  DELETE
+}
+
+enum PRIVILEGE_STATUS {
+  DENY
+  ALLOW
+  NOT_SET
 }
