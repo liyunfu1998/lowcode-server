@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import type { NextRequest } from 'next/server';
 
-const TOKEN_SECRET = process.env.NEXT_PUBLIC_ACCESS_TOKEN_SECRET || '';
+const TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET || '';
 export async function verifyToken(req: NextRequest, isJwt: boolean) {
   try {
     const token = req?.headers?.get('authorization');
