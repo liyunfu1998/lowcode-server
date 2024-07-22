@@ -1,40 +1,22 @@
 import { apiHandler, transformInterceptor } from '@/helpers';
 import systemRepo from '@/helpers/dbRepo/system';
-import prisma from '@/helpers/prisma';
 import type { NextRequest } from 'next/server';
 
 const create = apiHandler(async (req: NextRequest) => {
   const body = await req.json();
   const userId = await req.headers.get('userId');
 
-  if (userId) {
-    const user = await prisma.user.findUnique({
-      where: {
+  const result = await systemRepo.create({
+    ...body,
+    creator: {
+      connect: {
         id: userId,
       },
-    });
-    const result = await systemRepo.create({
-      ...body,
-      creator: {
-        connectOrCreate: {
-          where: {
-            id: userId,
-          },
-          create: {
-            id: userId,
-            name: user?.name,
-            email: user?.email,
-            password: user?.password,
-          },
-        },
-      },
-    });
-    return transformInterceptor({
-      data: result,
-    });
-  } else {
-    throw new Error('请先登录');
-  }
+    },
+  });
+  return transformInterceptor({
+    data: result,
+  });
 });
 
 const list = apiHandler(async (req: NextRequest) => {
