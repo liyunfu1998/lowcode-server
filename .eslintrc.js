@@ -17,5 +17,6 @@ module.exports = {
     'react/jsx-uses-react': 'off',
     '@typescript-eslint/no-unused-vars': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
+    'react/prop-types': 'off',
   },
 };
