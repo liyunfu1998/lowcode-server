@@ -65,8 +65,8 @@ export default function AuthForm(props: any) {
       } else {
         toast.error(result?.message || '登录失败，请稍后再试');
       }
-    } catch (err) {
-      toast.error('登录失败，请稍后再试');
+    } catch (err: any) {
+      toast.error(err.message || '登录失败，请稍后再试');
     } finally {
       setLoading(false);
     }
