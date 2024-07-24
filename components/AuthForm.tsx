@@ -15,6 +15,18 @@ export enum AUTH_TYPE {
   LOGIN,
   REGISTER,
 }
+
+const authSchema = z.object({
+  email: z.string().email({
+    message: '请输入正确的邮箱地址',
+  }),
+  password: z.string().min(6, {
+    message: '密码长度至少为6位',
+  }),
+  name: z.string().min(2, {
+    message: '名字长度至少为2位',
+  }),
+});
 export default function AuthForm(props: any) {
   const [loading, setLoading] = useState(false);
   const searchParams = useSearchParams();
@@ -23,25 +35,8 @@ export default function AuthForm(props: any) {
   const formSchema = useMemo(
     () =>
       isRegister
-        ? z.object({
-            email: z.string().email({
-              message: '请输入正确的邮箱地址',
-            }),
-            password: z.string().min(6, {
-              message: '密码长度至少为6位',
-            }),
-            name: z.string().min(2, {
-              message: '名字长度至少为2位',
-            }),
-          })
-        : z.object({
-            email: z.string().email({
-              message: '请输入正确的邮箱地址',
-            }),
-            password: z.string().min(6, {
-              message: '密码长度至少为6位',
-            }),
-          }),
+        ? authSchema.pick({ email: true, password: true, name: true })
+        : authSchema.pick({ email: true, password: true }),
     [isRegister],
   );
 
@@ -96,6 +91,8 @@ export default function AuthForm(props: any) {
         {isRegister ? (
           <FormField
             control={form.control}
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-expect-error
             name="name"
             render={({ field }) => (
               <FormItem>
